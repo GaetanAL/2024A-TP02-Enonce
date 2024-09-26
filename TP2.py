@@ -60,8 +60,7 @@ for b in bibliotheque:
 for i in toRemove:
     bibliotheque.pop(i)
     
-for i in toAdd:
-    bibliotheque.update({i : toAdd[i]})
+bibliotheque.update(toAdd)
 
 
 print(f" \n Bibliotheque avec modifications de cote : {bibliotheque} \n")
