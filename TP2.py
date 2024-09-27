@@ -6,6 +6,8 @@ Numéro d'équipe : 01
 Noms et matricules : Gaetan Lohier (2371634), Jad Charbachi (2381646)
 """
 import csv
+from datetime import datetime
+from datetime import date
 
 ########################################################################################################## 
 # PARTIE 1 : Création du système de gestion et ajout de la collection actuelle
@@ -75,6 +77,23 @@ print(f" \n Bibliotheque avec modifications de cote : {bibliotheque} \n")
 # TODO : Écrire votre code ici
 
 # bibliotheque.update({"emprunts" : "disponible"})
+csv_emprunts = open("emprunts.csv", newline='')
+emprunts = csv.reader(csv_emprunts)
+for c in emprunts:
+    cote = c[0]
+    date_emprunt = c[1]
+    if cote in bibliotheque:
+        bibliotheque[cote]['emprunts'] = 'emprunté'
+        bibliotheque[cote]['date_emprunt'] = date_emprunt
+    else:
+        print(f"Le livre {cote} n'est pas dans la bibliothèque")
+
+for cote in bibliotheque:
+    if 'emprunts' not in bibliotheque[cote]:
+        bibliotheque[cote]['emprunts'] = 'disponible'
+        bibliotheque[cote]['date_emprunt'] = None
+
+print(f" \n Bibliotheque avec emprunts : {bibliotheque} \n")
 
 
 
@@ -87,7 +106,19 @@ print(f" \n Bibliotheque avec modifications de cote : {bibliotheque} \n")
 ########################################################################################################## 
 
 # TODO : Écrire votre code ici
+tempsactuel = datetime.now()
+for cote in bibliotheque:
+    if bibliotheque[cote]['emprunts'] == 'emprunté':
+        date_emprunt = datetime.strptime(bibliotheque[cote]['date_emprunt'], '%Y-%m-%d')
+        joursretard = (tempsactuel - date_emprunt).days
+        if(joursretard > 365) :
+            bibliotheque[cote]['livres_perdus'] = 'livre perdu'
+        elif(joursretard > 30) :
+            frais_retard = min(joursretard*2,100)
+            bibliotheque[cote]['frais_retard'] = frais_retard
 
+print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
+    
 
 
 
