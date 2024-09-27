@@ -107,7 +107,6 @@ print(f" \n Bibliotheque avec emprunts : {bibliotheque} \n")
 
 # TODO : Écrire votre code ici
 tempsactuel = datetime.now()
-livres_perdus_liste = []
 
 for cote in bibliotheque:
     if bibliotheque[cote]['emprunts'] == 'emprunté':
@@ -115,13 +114,20 @@ for cote in bibliotheque:
         joursretard = (tempsactuel - date_emprunt).days
         if(joursretard > 365) :
             bibliotheque[cote]['livres_perdus'] = 'livre perdu'
-            livres_perdus_liste.append(cote)
         elif(joursretard > 30) :
             frais_retard = min(joursretard*2,100)
             bibliotheque[cote]['frais_retard'] = frais_retard
 
 print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
-print(f'\n Code des livres perdus : {livres_perdus_liste} \n')
+print('\nLivres perdus :')
+for cote in bibliotheque:
+    if('livres_perdus' in bibliotheque[cote].keys()):
+        print(cote, bibliotheque[cote])
+print('\nLivres en retard :')
+for cote in bibliotheque:
+    if('frais_retard' in bibliotheque[cote].keys()):
+        print(cote, bibliotheque[cote])
+    
 
     
 
