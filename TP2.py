@@ -82,16 +82,13 @@ csv_emprunts = open("emprunts.csv", newline='')
 emprunts = csv.reader(csv_emprunts)
 
 bibliotheque.update({"emprunts" : dict()})
-
-for b in bibliotheque:
-    for e in emprunts:
-        if b == e[0]:
-            bibliotheque["emprunts"][b] = dict( etat = "emprunté", date_emprunt = e[1])
-            break
-        else:
-            bibliotheque["emprunts"][b] = dict( etat = "disponible")
     
-    csv_emprunts.seek(0)
+for e in emprunts:
+    if e[0] in bibliotheque:
+        bibliotheque["emprunts"][e[0]] = dict( etat = "emprunté", date_emprunt = e[1])
+    else:
+        bibliotheque["emprunts"][e[0]] = dict( etat = "disponible")
+    
 
 print(f' \n Bibliotheque avec ajout des emprunts : {bibliotheque} \n')
 
@@ -112,7 +109,7 @@ for e in bibliotheque["emprunts"]:
             bibliotheque["livres_perdus"].append(e)
             
         elif temps_emprunt.days > 30:
-            frais = min(temps_emprunt.days * 2 , 100)
+            frais = min((temps_emprunt.days-30) * 2 , 100)
             bibliotheque["frais_retard"].update({e : frais})
             
 print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
