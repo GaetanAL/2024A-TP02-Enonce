@@ -115,7 +115,7 @@ for cote in bibliotheque:
         if(joursretard > 365) :
             bibliotheque[cote]['livres_perdus'] = 'livre perdu'
         elif(joursretard > 30) :
-            frais_retard = min(joursretard*2,100)
+            frais_retard = min((joursretard-30)*2,100)
             bibliotheque[cote]['frais_retard'] = frais_retard
 
 print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
