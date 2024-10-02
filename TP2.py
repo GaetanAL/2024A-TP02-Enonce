@@ -121,12 +121,12 @@ for cote in bibliotheque:
 print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
 print('\nLivres perdus :')
 for cote in bibliotheque:
-    if('livres_perdus' in bibliotheque[cote].keys()):
+    if('livres_perdus' in bibliotheque[cote]):
         print(cote, bibliotheque[cote])
 print('\nLivres en retard :')
 for cote in bibliotheque:
-    if('frais_retard' in bibliotheque[cote].keys()):
-        print(cote, bibliotheque[cote]["frais_retard"])
+    if('frais_retard' in bibliotheque[cote]):
+        print(cote,bibliotheque[cote])
     
 
     
