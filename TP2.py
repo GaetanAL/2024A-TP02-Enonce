@@ -37,11 +37,10 @@ nvCollection = csv.reader(csv_nvCollection)
 
 for c in nvCollection:
     if c[-1] in bibliotheque:
-        print(f"Le livre {c[-1]} ---- {c[0]} par {c[-3]} ---- est déjà présent dans la bibliothèque")
+        print(f"Le livre {c[-1]} ---- {c[0]} par {c[1]} ---- est déjà présent dans la bibliothèque")
     else:
-        bibliotheque.update({c[-1] : dict(titre = c[0], auteur = c[1], date_publication = c[2]) })
-        print(f"Le livre {c[-1]} ---- {c[0]} par {c[-3]} ---- a été ajouté avec succès")
-        
+        bibliotheque[c[-1]] = {"titre":c[0], "auteur":c[1], "date_publication":c[2]}
+        print(f"Le livre {c[-1]} ---- {c[0]} par {c[1]} ---- a été ajouté avec succès")
 
 
 ########################################################################################################## 
@@ -49,23 +48,15 @@ for c in nvCollection:
 ########################################################################################################## 
 
 # TODO : Écrire votre code ici
-toRemove = list()
-toAdd = dict()
 
-for b in bibliotheque:
-    if "Shakespeare" in bibliotheque[b]["auteur"] :
-        cote = "W"+b
-        toAdd.update({cote : bibliotheque[b]})
-        toRemove.append(b)
-        
-for i in toRemove:
-    bibliotheque.pop(i)
-    
-bibliotheque.update(toAdd)
+toRemove = [ b for b in bibliotheque if "Shakespeare" in bibliotheque[b]["auteur"]]
 
+bibliotheque.update({"W" + r : bibliotheque[r] for r in toRemove})
+
+for r in toRemove:
+    bibliotheque.pop(r)
 
 print(f" \n Bibliotheque avec modifications de cote : {bibliotheque} \n")
-
 
 
 
@@ -109,7 +100,7 @@ for e in bibliotheque["emprunts"]:
             bibliotheque["livres_perdus"].append(e)
             
         elif temps_emprunt.days > 30:
-            frais = min((temps_emprunt.days-30) * 2 , 100)
+            frais = min((temps_emprunt.days - 30) * 2 , 100)
             bibliotheque["frais_retard"].update({e : frais})
             
 print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
