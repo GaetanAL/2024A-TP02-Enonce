@@ -66,8 +66,6 @@ print(f" \n Bibliotheque avec modifications de cote : {bibliotheque} \n")
 
 # TODO : Écrire votre code ici
 
-bibliotheque.update({"emprunts" : "disponible"})
-
 csv_emprunts = open("emprunts.csv", newline='')
 
 emprunts = csv.reader(csv_emprunts)
@@ -89,8 +87,8 @@ print(f' \n Bibliotheque avec ajout des emprunts : {bibliotheque} \n')
 
 # TODO : Écrire votre code ici
 today = datetime.now()
-bibliotheque.update({"livres_perdus" : list()})
-bibliotheque.update({"frais_retard" : dict()})
+bibliotheque.update({"livres_perdus" : []})
+bibliotheque.update({"frais_retard" : {}})
 
 for e in bibliotheque["emprunts"]:
     if bibliotheque["emprunts"][e]["etat"] == "emprunté":
