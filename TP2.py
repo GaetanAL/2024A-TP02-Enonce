@@ -15,12 +15,12 @@ from datetime import datetime
 # TODO : Écrire votre code ici
 csv_collection = open("collection_bibliotheque.csv", newline='')
 
-collection = csv.reader(csv_collection)
+collection = csv.DictReader(csv_collection)
 
 bibliotheque  = dict()
 
 for c in collection:
-    bibliotheque[c[-1]] = dict(titre = c[0], auteur = c[1], date_publication = c[2])
+    bibliotheque[c["cote_rangement"]] = dict(titre = c["titre"], auteur = c["auteur"], date_publication = c["date_publication"])
     
 print(f' \n Bibliotheque initiale : {bibliotheque} \n')
 
@@ -33,14 +33,14 @@ print(f' \n Bibliotheque initiale : {bibliotheque} \n')
 
 csv_nvCollection = open("nouvelle_collection.csv", newline='')
 
-nvCollection = csv.reader(csv_nvCollection)
+nvCollection = csv.DictReader(csv_nvCollection)
 
 for c in nvCollection:
-    if c[-1] in bibliotheque:
-        print(f"Le livre {c[-1]} ---- {c[0]} par {c[1]} ---- est déjà présent dans la bibliothèque")
+    if c["cote_rangement"] in bibliotheque:
+        print(f"Le livre {c["cote_rangement"]} ---- {c["titre"]} par {c["auteur"]} ---- est déjà présent dans la bibliothèque")
     else:
-        bibliotheque[c[-1]] = {"titre":c[0], "auteur":c[1], "date_publication":c[2]}
-        print(f"Le livre {c[-1]} ---- {c[0]} par {c[1]} ---- a été ajouté avec succès")
+        bibliotheque[c["cote_rangement"]] = {"titre":c["titre"], "auteur":c["auteur"], "date_publication":c["date_publication"]}
+        print(f"Le livre {c["cote_rangement"]} ---- {c["titre"]} par {c["auteur"]} ---- a été ajouté avec succès")
 
 
 ########################################################################################################## 
@@ -68,15 +68,18 @@ print(f" \n Bibliotheque avec modifications de cote : {bibliotheque} \n")
 
 csv_emprunts = open("emprunts.csv", newline='')
 
-emprunts = csv.reader(csv_emprunts)
+emprunts = csv.DictReader(csv_emprunts)
 
 bibliotheque.update({"emprunts" : dict()})
     
-for e in emprunts:
-    if e[0] in bibliotheque:
-        bibliotheque["emprunts"][e[0]] = dict( etat = "emprunté", date_emprunt = e[1])
+for b in bibliotheque:
+    for e in emprunts:
+        if b == e["cote_rangement"]:
+            bibliotheque["emprunts"][b] = dict( etat = "emprunté", date_emprunt = e["date_emprunt"])
+            break
     else:
-        bibliotheque["emprunts"][e[0]] = dict( etat = "disponible")
+        bibliotheque["emprunts"][b] = dict( etat = "disponible", date_emprunt = None)
+        csv_emprunts.seek(0)
     
 
 print(f' \n Bibliotheque avec ajout des emprunts : {bibliotheque} \n')
