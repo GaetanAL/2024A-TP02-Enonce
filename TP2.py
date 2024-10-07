@@ -126,7 +126,7 @@ for cote in bibliotheque:
 print('\nLivres en retard :')
 for cote in bibliotheque:
     if('frais_retard' in bibliotheque[cote]):
-        print(cote,bibliotheque[cote])
+        print(cote,bibliotheque[cote]["frais_retard"],end = ", ")
     
 
     
